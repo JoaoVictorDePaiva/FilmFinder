@@ -5,9 +5,9 @@ st.markdown(
     """
     <style>
     .main {
-        background-color: #f0f2f6;
+        background-color: #0E1117;
         padding: 20px;
-        font-family: 'Arial', sans-serif;
+        font-family: 'comic-sans', sans-serif;
     }
     .stTitle {
         color: #333333;
@@ -54,13 +54,22 @@ if st.button('Gerar recomendações'):
     if movie_name:
         with st.spinner('Aguarde um instante'):
             result = functions.movies(movie_name)
-            st.title(f'Resumo do filme {result['movie']}:\n')
+            image_movie = functions.movie_id(result["original_movie_name"])
+            if image_movie:
+                st.markdown(
+                    f'<div class="centered-image"><img src="{image_movie}" style="max-width: 100%; height: auto;" alt="Poster do filme"></div>',
+                    unsafe_allow_html=True
+                )
+            else:
+                st.write("Imagem não disponível.")
+
+            st.title(f'Resumo do filme {result['movie']}\n')
             st.text(f'{result['summary']}\n')
-            st.title(f'Generos do filme {result['movie']}:\n')
+            st.title(f'Generos do filme {result['movie']}\n')
             st.text(f'{result['genre']}\n')
             st.title(f'Outros filmes do mesmo diretor:')
             st.text(f'{result['director_movies']}\n')
-            st.title(f'Recomendações de outros filmes parecidos com {result['movie']}:\n')
+            st.title(f'Recomendações de outros filmes parecidos com {result['movie']}\n')
             st.text(f'{result['similar_movies']}\n')
     else:
         st.warning('Por favor, digite o nome do filme.')
