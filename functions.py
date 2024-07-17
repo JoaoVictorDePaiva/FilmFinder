@@ -2,7 +2,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 try:
     llm = ChatGoogleGenerativeAI(
-        google_api_key = "your_api_key",
+        google_api_key = "AIzaSyDLgmNX8AMOi_YhDm0coGevViy_YFY5qsA",
     model = "gemini-1.5-flash-latest",
     temperature = 0.3,
     topk = 3,
@@ -27,61 +27,56 @@ import gzip
 import json
 
 def movies(movie_name):
-    
     first_prompt = PromptTemplate.from_template(
-        "Forneça um resumo sucinto do enredo do filme '{movie}', incluindo o nome do diretor."
+        "Qual é o nome original do filme '{movie}'? Na resposta, fale apenas o nome original sem asteriscos e nenhuma informação adicional"
     )
-   
+
     second_prompt = PromptTemplate.from_template(
-        "Liste os gêneros do filme '{movie}', sem adicionar informações adicionais."
+        "Forneça um resumo sucinto do enredo do filme '{original_movie_name}', incluindo o nome do diretor."
     )
-    
+
     third_prompt = PromptTemplate.from_template(
-        "Liste três filmes dirigidos pelo mesmo diretor de '{summary}', fornecendo o título, o nome do diretor e um breve resumo para cada."
+        "Liste os gêneros do filme '{original_movie_name}', sem adicionar informações adicionais."
     )
 
     fourth_prompt = PromptTemplate.from_template(
-        "Liste três filmes do mesmo gênero predominante de '{movie}' ({genre}), fornecendo o título e um breve resumo para cada."
+        "Liste três filmes dirigidos pelo mesmo diretor de '{summary}', fornecendo o título, o nome do diretor e um breve resumo para cada."
     )
 
     fifth_prompt = PromptTemplate.from_template(
-    "Qual é o nome original do filme '{movie}'? Na resposta, fale apenas o nome original sem asteriscos e nenhuma informação adicional"
-)
-    
-    
+        "Liste três filmes do mesmo gênero predominante de '{original_movie_name}' ({genre}), fornecendo o título e um breve resumo para cada."
+    )
+
     first_chain = LLMChain(
-        llm = llm,
-        prompt = first_prompt,
-        output_key = "summary"
+        llm=llm,
+        prompt=first_prompt,
+        output_key="original_movie_name"
     )
-    
-    
+
     second_chain = LLMChain(
-        llm = llm,
-        prompt = second_prompt,
-        output_key = "genre"
+        llm=llm,
+        prompt=second_prompt,
+        output_key="summary"
     )
-    
-    
+
     third_chain = LLMChain(
-        llm = llm,
-        prompt = third_prompt,
-        output_key = "director_movies"
+        llm=llm,
+        prompt=third_prompt,
+        output_key="genre"
     )
-    
-    
+
     fourth_chain = LLMChain(
-        llm = llm,
-        prompt = fourth_prompt,
-        output_key = "similar_movies"
+        llm=llm,
+        prompt=fourth_prompt,
+        output_key="director_movies"
     )
 
     fifth_chain = LLMChain(
-        llm = llm,
-        prompt = fifth_prompt,
-        output_key = "original_movie_name"
+        llm=llm,
+        prompt=fifth_prompt,
+        output_key="similar_movies"
     )
-    
+
     main_chain = SequentialChain(
         chains=[first_chain, second_chain, third_chain, fourth_chain, fifth_chain],
         input_variables=["movie"],
@@ -129,7 +124,7 @@ def get_image(movie_id):
         posters = data.get("posters", [])
         
         for poster in posters:
-            if poster.get("iso_639_1") == "en" or poster.get("iso_639_1") == "pt":
+            if poster.get("iso_639_1") == "en":
                 original_poster = poster.get("file_path")
                 print(original_poster)
                 image = f"https://image.tmdb.org/t/p/w342{original_poster}"

@@ -5,54 +5,79 @@ st.markdown(
     """
     <style>
     .main {
-        background-color: #0E1117;
+        background-color:  #2e3346;
         padding: 20px;
         font-family: 'comic-sans', sans-serif;
     }
     .stTitle {
-        color: #333333;
-        font-size: 2em;
+        color: #ffffff !important;
+        font-size: 4em;
+        text-align: center;
         font-weight: bold;
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-    .stTextInput {
+        margin-top: 10px;
         margin-bottom: 20px;
     }
+    .stTextInput > div > div > input {
+        color: #ffffff !important;
+        background-color: #333333 !important;
+    }
     .stButton button {
-        background-color: #4CAF50;
+        background-color: #1b4854;
         color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 4px;
+        padding: 5px 10px;
+        border: solid;
+        border-width: 2px;
+        border-radius: 15px;
         cursor: pointer;
     }
     .stButton button:hover {
-        background-color: #45a049;
+        background-color: #1b4854;
     }
     .stMarkdown h3 {
-        color: #333333;
+        color: #ffffff;
         font-size: 1.5em;
         font-weight: bold;
         margin-top: 20px;
         margin-bottom: 10px;
     }
+    .stTextInput > div {
+        margin-top: -30px;
+    }
     .stMarkdown p {
-        color: #666666;
+        color: #ffffff;
         font-size: 1.2em;
         margin-bottom: 20px;
+    }    
+     .stMarkdown .custom-text {
+        color: #ffffff;
+        font-size: 1.2em;
+        margin-bottom: 0px;
+    }
+    .centered-image {
+        display: flex;
+        justify-content: center;
+    }
+    .css-1cpxqw2 .stSpinner > div > div {
+        color: #ffffff !important;
+    }
+    .css-1n543e5 .stTextInput > div > div {
+        color: #ffffff !important;
+    }
+    .css-184tjsw p {
+        color: #ffffff !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-st.title('Recomendações de Filmes')
+st.markdown('<h1 class="stTitle">Filmfinder</h1>', unsafe_allow_html=True)
 
-movie_name = st.text_input('Digite o nome de um filme que você gosta e nós recomendaremos outros baseados nele:')
+st.markdown('<p class="custom-text">Digite o nome de um filme que você gosta e nós recomendaremos outros baseados nele:</p>', unsafe_allow_html=True)
+movie_name = st.text_input('')
 if st.button('Gerar recomendações'):
     if movie_name:
-        with st.spinner('Aguarde um instante'):
+        with st.spinner('Aguarde um instante...'):
             result = functions.movies(movie_name)
             image_movie = functions.movie_id(result["original_movie_name"])
             if image_movie:
@@ -63,13 +88,13 @@ if st.button('Gerar recomendações'):
             else:
                 st.write("Imagem não disponível.")
 
-            st.title(f'Resumo do filme {result['movie']}\n')
-            st.text(f'{result['summary']}\n')
-            st.title(f'Generos do filme {result['movie']}\n')
-            st.text(f'{result['genre']}\n')
-            st.title(f'Outros filmes do mesmo diretor:')
-            st.text(f'{result['director_movies']}\n')
-            st.title(f'Recomendações de outros filmes parecidos com {result['movie']}\n')
-            st.text(f'{result['similar_movies']}\n')
+            st.markdown(f'<h3>Resumo do filme {result["movie"]}</h3>', unsafe_allow_html=True)
+            st.markdown(f'<p>{result["summary"]}</p>', unsafe_allow_html=True)
+            st.markdown(f'<h3>Gêneros do filme {result["movie"]}</h3>', unsafe_allow_html=True)
+            st.markdown(f'<p>{result["genre"]}</p>', unsafe_allow_html=True)
+            st.markdown(f'<h3>Outros filmes do mesmo diretor:</h3>', unsafe_allow_html=True)
+            st.markdown(f'<p>{result["director_movies"]}</p>', unsafe_allow_html=True)
+            st.markdown(f'<h3>Recomendações de outros filmes parecidos com {result["movie"]}</h3>', unsafe_allow_html=True)
+            st.markdown(f'<p>{result["similar_movies"]}</p>', unsafe_allow_html=True)
     else:
         st.warning('Por favor, digite o nome do filme.')
