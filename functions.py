@@ -2,7 +2,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 try:
     llm = ChatGoogleGenerativeAI(
-        google_api_key = "AIzaSyDLgmNX8AMOi_YhDm0coGevViy_YFY5qsA",
+        google_api_key = "your_api_key",
     model = "gemini-1.5-flash-latest",
     temperature = 0.3,
     topk = 3,
@@ -29,24 +29,24 @@ import json
 def movies(movie_name):
     
     first_prompt = PromptTemplate.from_template(
-        "Escreva um resumo de 4 a 6 frases sobre o enredo do filme '{movie}'. Inclua o nome do diretor do filme"
+        "Forneça um resumo sucinto do enredo do filme '{movie}', incluindo o nome do diretor."
     )
    
     second_prompt = PromptTemplate.from_template(
-        "Liste todos os gêneros do filme '{movie}'. Não inclua nenhuma informação adicional além dos gêneros."
+        "Liste os gêneros do filme '{movie}', sem adicionar informações adicionais."
     )
     
     third_prompt = PromptTemplate.from_template(
-        "Cite três filmes dirigidos pelo mesmo diretor do filme '{summary}'. Para cada filme, forneça o título, o nome do diretor e um breve resumo de 2 a 3 frases."
+        "Liste três filmes dirigidos pelo mesmo diretor de '{summary}', fornecendo o título, o nome do diretor e um breve resumo para cada."
     )
 
     fourth_prompt = PromptTemplate.from_template(
-        "Cite três filmes que compartilham o mesmo gênero predominante do filme '{movie}, {genre}'. Para cada filme, forneça o título e um breve resumo de 2 a 3 frases."
+        "Liste três filmes do mesmo gênero predominante de '{movie}' ({genre}), fornecendo o título e um breve resumo para cada."
     )
 
     fifth_prompt = PromptTemplate.from_template(
-        "Diga o nome original do filme{movie}, sem nenhuma outra palavra e sem asteristicos, espaços ou dois pontos. A primeira letra de cada palavra deverá ser maiuscula"
-    )
+    "Qual é o nome original do filme '{movie}'? Na resposta, fale apenas o nome original sem asteriscos e nenhuma informação adicional"
+)
     
     
     first_chain = LLMChain(
@@ -93,16 +93,10 @@ def movies(movie_name):
 
     return result
 
-teste = movies("até o ultimo homem")
-print(teste["summary"])
-print(teste["genre"])
-print(teste["similar_movies"])
-print(teste["director_movies"])
-print(teste["original_movie_name"])
 def movie_id(movie_name):
     now = datetime.now()
     formatted_now = now.strftime("%m_%d_%Y")
-    url = f"https://files.tmdb.org/p/exports/movie_ids_{formatted_now}.json.gz"
+    url = f"https://files.tmdb.org/p/exports/movie_ids_07_16_2024.json.gz"
     movie_name_wout_spaces = movie_name.rstrip()
     try:
         with requests.get(url, stream=True) as response:
@@ -135,8 +129,9 @@ def get_image(movie_id):
         posters = data.get("posters", [])
         
         for poster in posters:
-            if poster.get("iso_639_1") == "en":
+            if poster.get("iso_639_1") == "en" or poster.get("iso_639_1") == "pt":
                 original_poster = poster.get("file_path")
+                print(original_poster)
                 image = f"https://image.tmdb.org/t/p/w342{original_poster}"
                 return image
         
