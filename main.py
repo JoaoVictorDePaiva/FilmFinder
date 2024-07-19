@@ -4,11 +4,16 @@ import streamlit as st
 st.markdown(
     """
     <style>
+    body {
+        color: #ffffff !important
+    }
+    
     .main {
-        background-color:  #2e3346;
+        background-color: #2e3346;
         padding: 20px;
         font-family: 'comic-sans', sans-serif;
     }
+    
     .stTitle {
         color: #ffffff !important;
         font-size: 4em;
@@ -17,22 +22,25 @@ st.markdown(
         margin-top: 10px;
         margin-bottom: 20px;
     }
-    .stTextInput > div > div > input {
+    
+    .stTextInput input {
         color: #ffffff !important;
         background-color: #333333 !important;
     }
+    
     .stButton button {
         background-color: #1b4854;
         color: white;
         padding: 5px 10px;
-        border: solid;
-        border-width: 2px;
+        border: solid 2px;
         border-radius: 15px;
         cursor: pointer;
     }
+    
     .stButton button:hover {
         background-color: #1b4854;
     }
+    
     .stMarkdown h3 {
         color: #ffffff;
         font-size: 1.5em;
@@ -40,29 +48,23 @@ st.markdown(
         margin-top: 20px;
         margin-bottom: 10px;
     }
+    
     .stTextInput > div {
         margin-top: -30px;
     }
-    .stMarkdown p {
+    
+    .stMarkdown p, .custom-text {
         color: #ffffff;
         font-size: 1.2em;
-        margin-bottom: 20px;
-    }    
-     .stMarkdown .custom-text {
-        color: #ffffff;
-        font-size: 1.2em;
-        margin-bottom: 0px;
     }
+    
     .centered-image {
         display: flex;
         justify-content: center;
     }
-    .css-1cpxqw2 .stSpinner > div > div {
-        color: #ffffff !important;
-    }
-    .css-1n543e5 .stTextInput > div > div {
-        color: #ffffff !important;
-    }
+    
+    .css-1cpxqw2 .stSpinner > div > div,
+    .css-1n543e5 .stTextInput > div > div,
     .css-184tjsw p {
         color: #ffffff !important;
     }

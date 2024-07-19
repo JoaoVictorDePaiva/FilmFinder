@@ -36,7 +36,7 @@ def movies(movie_name):
     )
 
     third_prompt = PromptTemplate.from_template(
-        "Liste os gêneros do filme '{original_movie_name}', sem adicionar informações adicionais."
+        "Liste os gêneros do filme '{original_movie_name}', sem adicionar informações adicionais. Não coloque gêneros como comédia negra."
     )
 
     fourth_prompt = PromptTemplate.from_template(
